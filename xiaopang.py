@@ -58,7 +58,7 @@ class Point:
         self.y = y
 
 
-class lazyproperty:
+class lazyproperty(object):
     def __init__(self, func):
         self.func = func
 
@@ -74,7 +74,7 @@ class lazyproperty:
 import math
 
 
-class Circle:
+class Circle():
     def __init__(self, radius):
         self.radius = radius
 
