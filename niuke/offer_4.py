@@ -4,8 +4,8 @@
 @author: lizheao
 @contact: lizheao940510@gmail.com
 @software: PyCharm
-@file: 31.py
-@time: 14:01
+@file: offer_4.py
+@time: 22:31
 """
 
 
@@ -32,28 +32,35 @@
 #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 #               佛祖保佑         永无BUG
-class Solution(object):
-    def nextPermutation(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: void Do not return anything, modify nums in-place instead.
-        """
-        right = len(nums) - 1
-        while nums[right] <= nums[right - 1] and right - 1 >= 0:
-            right -= 1
-        if right == 0:
-            return self.reverse(nums, 0, len(nums) - 1)
-        pivot = right - 1
-        sucessor = 0
-        for i in range(len(nums) - 1, pivot, -1):
-            if nums[i] > nums[pivot]:
-                sucessor = i
-                break
-        nums[pivot], nums[sucessor] = nums[sucessor], nums[pivot]
-        self.reverse(nums, pivot + 1, len(nums) - 1)
+# -*- coding:utf-8 -*-
+class TreeNode:
+    def __init__(self, x):
+        self.val = x
+        self.left = None
+        self.right = None
 
-    def reverse(self, nums, l, r):
-        while l < r:
-            nums[l], nums[r] = nums[r], nums[i]
-            l += 1
-            r -= 1
+
+class Solution:
+    # 返回构造的TreeNode根节点
+    def reConstructBinaryTree(self, pre, tin):
+        return self.build(pre, tin, 0, len(pre) - 1, 0, len(tin) - 1)
+
+    def build(self, pre, ins, pstart, pend, instart, inend):
+        if pstart > pend:
+            return None
+        cur = pre[pstart]
+        find = instart
+        while find <= inend:
+            if cur == ins[find]:
+                break
+            else:
+                find += 1
+        find = ins.find(cur)
+        len = find - instart
+        res = TreeNode(cur)
+        res.left = self.build(pre, ins, pstart + 1, pstart + len, instart, find - 1)
+        res.right = self.build(pre, ins, pstart + len + 1, pend, find + 1, inend)
+        return res
+
+
+        # write code here

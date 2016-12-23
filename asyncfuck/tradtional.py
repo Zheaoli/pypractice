@@ -4,11 +4,9 @@
 @author: lizheao
 @contact: lizheao940510@gmail.com
 @software: PyCharm
-@file: 31.py
-@time: 14:01
+@file: tradtional.py
+@time: 17:00
 """
-
-
 #                       _oo0oo_
 #                      o8888888o
 #                      88" . "88
@@ -32,28 +30,22 @@
 #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 #               佛祖保佑         永无BUG
-class Solution(object):
-    def nextPermutation(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: void Do not return anything, modify nums in-place instead.
-        """
-        right = len(nums) - 1
-        while nums[right] <= nums[right - 1] and right - 1 >= 0:
-            right -= 1
-        if right == 0:
-            return self.reverse(nums, 0, len(nums) - 1)
-        pivot = right - 1
-        sucessor = 0
-        for i in range(len(nums) - 1, pivot, -1):
-            if nums[i] > nums[pivot]:
-                sucessor = i
-                break
-        nums[pivot], nums[sucessor] = nums[sucessor], nums[pivot]
-        self.reverse(nums, pivot + 1, len(nums) - 1)
+import time
+from concurrent.futures import ThreadPoolExecutor
 
-    def reverse(self, nums, l, r):
-        while l < r:
-            nums[l], nums[r] = nums[r], nums[i]
-            l += 1
-            r -= 1
+import requests
+
+NUMBERS = range(12)
+URL = 'http://httpbin.org/get?a={}'
+
+
+def fetch(a):
+    r = requests.get(URL.format(a))
+    return r.json()['args']['a']
+
+
+start = time.time()
+with ThreadPoolExecutor(max_workers=3) as executor:
+    for num, result in zip(NUMBERS, executor.map(fetch, NUMBERS)):
+        print('fetch({}) = {}'.format(num, result))
+print('Use requests+ThreadPoolExecutor cost: {}'.format(time.time() - start))
